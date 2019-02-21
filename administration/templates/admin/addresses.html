@@ -1,0 +1,48 @@
+{% extends 'base/list_page.html' %}
+
+{% block title %}
+    Admin IP addresses
+{% endblock %}
+
+{% block page_title %}
+    <div class="p-3 mt-2 mb-2">
+        <h3 style="display: inline-block;">Total IP addresses: {{ items_count }}</h3>
+    </div>
+{% endblock %}
+
+
+{% block content_title %}
+    <h3>Your IPs:</h3>
+    <div class="row mt-4">
+        <div class="col">Address</div>
+        <div class="col-sm-2">last hour</div>
+        <div class="col-sm-2">last day</div>
+        <div class="col-sm-3">last</div>
+        <div class="col-sm-2"></div>
+        <div class="col-sm-1"></div>
+    </div>
+    <hr>
+{% endblock %}
+
+{% block list_item %}
+{% with ip=item %}
+    <div class="col">
+        <a href="{% url 'get_address_info' ip.pk %}">
+            {{ ip }}
+        </a>
+    </div>
+    <div class="col-sm-2">
+        {{ ip.get_last_hour_connections.count }}
+    </div>
+    <div class="col-sm-2">
+        {{ ip.get_last_day_connections.count }}
+    </div>
+    <div class="col-sm-3">
+        {{ ip.get_last_connection.time }}
+    </div>
+    <div class="col-sm-2">
+    </div>
+    <div class="col-sm-1">
+    </div>
+{% endwith %}
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base/index.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block body %}
+<div class="row justify-content-center">
+  <form method="post" class="m-5 pt-5 pr-5 pl-5 border">
+  	<div class="form-group">
+    {% csrf_token %}
+    {% for field in form %}
+    	<p>
+    		{{ field.label_tag }}<br>
+        	{{ field }}
+    	</p>
+    	<div style="position: absolute;bottom: 0px;">
+        {% for error in field.errors %}
+          <p class="alert alert-danger">{{ error }}</p>
+        {% endfor %}
+    	</div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary btn-block mt-2 mb-2">Login</button>
+    <center><a href="{% url 'signup' %}">I dont have an account</a></center>
+	</div>
+  </form>
+</div>
+{% endblock %}
+ No newline at end of file

@@ -1,0 +1,88 @@
+{% extends 'base/content_page.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block page_title %}
+<script type="text/javascript">
+	function copy_to_clipboard(){
+		var copyText = document.getElementById("apiKey");
+		copyText.select();
+  		document.execCommand("copy");
+
+	}
+</script>
+<div class="row m-1 w-100">
+    <h1 class="ml-1">Your api key:</h1>
+</div>
+<div class="row m-1 w-100">
+		<input class="col" type="text" value="{{ scraper.get_api_key }}" id="apiKey" readonly>
+        <div class="col">
+        <div class="w-50 btn btn-primary m-2" onclick="copy_to_clipboard()"> Copy to clipboard </div>
+        </div>
+</div>
+<div class="row m-1 mb-3 mt-3 w-50">
+    
+<div class="col"> <a href="/urls/add/" class="btn btn-block m-1 btn-success">Add Target URL </a></div>
+    <div class="col"><a class="btn btn-primary" href="{% url 'download_android_app' %}"> Download android app</a></div>
+    {% if android %}
+    <div class="col">
+        <a class="w-100 btn btn-primary"
+			    href="intent:#Intent;action=com.anovak92.webscraper;category=android.intent.category.DEFAULT;category=android.intent.category.BROWSABLE;S.api_key={{ scraper.get_api_key }};end">
+                Open in app
+            </a></div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block content %}
+    <div class="w-75 mb-5">
+			<h3>Brief stats:</h3>
+			<hr>
+
+            <div class="row m-2 p-2">
+                <div class="col-4">Total scrapes:</div>
+                <div class="col-1">{{ scraper.scrapes }}</div>
+                <div class="col-1"></div>
+            </div>
+
+            <div class="row m-2 p-2">
+                <div class="col-4">Available tokens:</div>
+                <div class="col-1">{{ scraper.tokens }}</div>
+                <div class="col-1"></div>
+            </div>
+
+            <div class="row m-2 p-2">
+                <div class="col-4">Available url for scraping:</div>
+                <div class="col-1">{{ scraper.get_available_for_scraping.count }}</div>
+                <div class="col-1"></div>
+            </div>
+
+            <div class="row m-2 p-2">
+                <div class="col-4">Devices:</div>
+                <div class="col-1">{{ scraper.get_devices.count }}</div>
+                <div class="col-1"><small><a href="{% url 'get_all_devices' %}">details</a></small></div>
+            </div>
+
+            <div class="row m-2 p-2">
+                <div class="col-4">IP addresses:</div>
+                <div class="col-1">{{ scraper.get_ip_addresses.count }}</div>
+                <div class="col-1"><small><a href="{% url 'get_all_addresses' %}">details</a></small></div>
+            </div>
+
+            <div class="row m-2 p-2">
+                <div class="col-4">Complains on your devices:</div>
+                <div class="col-1">{{ scraper.complains }}</div>
+                <div class="col-1"></div>
+            </div>
+		</div>
+{% endblock %}
+
+{% block sidebar %}
+<div id="actions">
+    <script>
+            create_actions(new Map([
+                ['Delete account', {href:'{% url 'delete_user' %}',class:'btn-danger'}]
+            ]));
+        </script>
+</div>
+{% endblock %}

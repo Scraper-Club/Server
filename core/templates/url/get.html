@@ -1,0 +1,47 @@
+{% extends 'base/content_page.html' %}
+
+{% block title %}Manage URL{% endblock %}
+
+{% block includes %}
+    {{ block.super }}
+    {% load static %}
+    <script src="{% static 'scrapurl.js' %}"></script>
+{% endblock %}
+
+{% block page_title %}
+    <div class="p-3">
+		<h1 style="display: inline-block;">Domain: {{ url.domain }}</h1>
+		<a href="{% url 'get_domain' domain_id=url.domain.id %}">manage</a>
+	</div><br>
+{% endblock %}
+
+{% block content_title %}
+    <div class="mb-5"><h2>Url: {{ url }}</h2></div>
+{% endblock %}
+
+{% block content %}
+	<form action="{% url 'update_url' url_id=url.id %}" method="post" class="w-50">
+	<h4>Configurations:</h4>
+	<hr>
+    {% csrf_token %}
+    {% for field in form_configs %}
+      	 <div class="form-group row">
+        	<div class="col">{{ field.label_tag }}</div>
+        	<div class="col">{{ field }}</div>
+      	</div>
+    	{% endfor %}
+    		<button type="submit" class="btn btn-primary mt-2 mb-2">Save for this URL</button>
+    		<a href="{% url 'reset_url' url_id=url.id %}">
+    			<button type="button" class="btn btn-secondary mt-2 mb-2">Use Domain configs</button></a>
+  		</form>
+{% endblock %}
+
+{% block sidebar %}
+    <div id="actions">
+        <script>
+            create_actions(new Map([
+                ['Delete URL', { elem: 'div', onclick:'delete_url({{ url.pk }})', class:'btn-danger'}]
+            ]));
+        </script>
+    </div>
+{% endblock %}

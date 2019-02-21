@@ -1,0 +1,79 @@
+{% extends 'base/content_page.html' %}
+
+{% block title %}Manage IP Address{% endblock %}
+
+{% block page_title %}
+    <div class="p-3">
+		<h1 style="display: inline-block;">IP Address : {{ ip_address }}</h1>
+	</div>
+{% endblock %}
+
+{% block includes %}
+    {{ block.super }}
+        {% load static %}
+        <script src="{% static 'ipaddr_api.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="w-50 mb-5">
+			<h3>Brief stats:</h3>
+			<hr>
+			<div class="row m-2 p-2">
+				<div class="col">Connections for last hour:</div>
+				<div class="col">{{ connections_for_hour }}</div>
+				<div class="col-1"></div>
+			</div>
+			<div class="row m-2 p-2">
+				<div class="col">Connections for last day:</div>
+				<div class="col">{{ connections_for_day }}</div>
+				<div class="col-1"></div>
+			</div>
+	</div>
+	<div class="w-50 mb-5">
+		<h3>IP Rate rules:</h3>
+		<hr>
+		<div class="p-2 m-2 pl-4">
+
+			<div class="form-group row">
+              <label for="rate_type" class="col-2 col-form-label">Select rate type:</label>
+              <div class="col-sm-10">
+				  <select class="form-control" id="rate_type">
+					  <option {% if ip_address.rate_type == 'unlimited' %} selected {% endif %}>unlimited</option>
+					  <option {% if ip_address.rate_type == 'daily' %} selected {% endif %}>daily</option>
+					  <option {% if ip_address.rate_type == 'hourly' %} selected {% endif %}>hourly</option>
+				  </select>
+              </div>
+          	</div>
+
+			<div class="form-group row">
+              <label for="rate_limit" class="col-2 col-form-label">Url 1:</label>
+              <div class="col-sm-10">
+                  <input type="text" class="form-control" id="rate_limit" value="{{ rate_limit }}">
+              </div>
+          	</div>
+			<button class="btn btn-primary mt-2 mb-2" onclick="update_ip_rate()">Save</button>
+		</div>
+	</div>
+    <script>
+        function update_ip_rate(){
+                patch_ip(
+                   "{{ ip_address.pk }}",
+                   $("#rate_type").val(),
+                   $("#rate_limit").val()
+                );
+        }
+
+
+    </script>
+{% endblock %}
+
+{% block sidebar %}
+    <div id="actions">
+        <script>
+            var ip_pk = "{{ ip_address.pk }}"
+            create_actions(new Map([
+                ['Delete', { elem: 'div', onclick:'delete_ip(ip_pk)', class:'btn-danger'}]
+            ]));
+        </script>
+    </div>
+{% endblock %}

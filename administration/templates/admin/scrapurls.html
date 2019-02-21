@@ -1,0 +1,44 @@
+{% extends 'base/list_page.html' %}
+
+{% block title %}
+    Admin URLs
+{% endblock %}
+
+{% block page_title %}
+    <div class="p-3 mt-2 mb-2">
+        <h3 style="display: inline-block;">Total URLs: {{ items_count }}</h3>
+    </div>
+{% endblock %}
+
+
+{% block content_title %}
+    <div id="filter">
+        <script>
+            create_filter(new Map([
+                ['Pool',['All','Public','Private']],
+                ['Status',['All','Not scraped','Scraping','Scraped']]
+            ]));
+        </script>
+    </div>
+    <hr>
+{% endblock %}
+
+{% block list_item %}
+{% with url=item %}
+    <div class="col-6">
+        {{ url|truncatechars:60 }}
+    </div>
+    <div class="col-2">
+        {{ url.get_status_display }}
+    </div>
+    <div class="col-sm-2">
+        <small>
+        </small>
+    </div>
+    <div class="col-sm-2">
+        <small>
+            <a href="{% url 'admin_url_delete' pk=url.id %}">delete</a>
+        </small>
+    </div>
+{% endwith %}
+{% endblock %}

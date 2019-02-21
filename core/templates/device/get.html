@@ -1,0 +1,64 @@
+{% extends 'base/content_page.html' %}
+
+{% block title %}Manage Device{% endblock %}
+
+{% block page_title %}
+    <div class="p-3">
+		<h1 style="display: inline-block;">Device: {{ device }}</h1>
+	</div>
+{% endblock %}
+
+{% block content %}
+    <div class="w-50 mb-5">
+			<h3>Brief stats:</h3>
+			<hr>
+            <div class="row m-2 p-2">
+				<div class="col">Android ID:</div>
+				<div class="col">{{ device.device_id }}</div>
+				<div class="col-1"></div>
+			</div>
+            {% with stats=device.get_statistic %}
+			<div class="row m-2 p-2">
+				<div class="col">Scrapes made by device:</div>
+				<div class="col">{{ stats.scrapes_count }}</div>
+				<div class="col-1"></div>
+			</div>
+			<div class="row m-2 p-2">
+				<div class="col">Complains on device:</div>
+				<div class="col">{{ stats.complains_count }}</div>
+				<div class="col-1"></div>
+			</div>
+			<div class="row m-2 p-2">
+				<div class="col">Device status:</div>
+				<div class="col">
+                    {% if stats.is_blocked %}
+                        <span class="badge badge-danger">Blocked</span>
+                    {% else %}
+                        <span class="badge badge-success">Working</span>
+                    {% endif %}
+                </div>
+				<div class="col-1"></div>
+			</div>
+			<div class="row m-2 p-2">
+				<div class="col">Used ip addresses:</div>
+				<div class="col">
+                    {% for ip in device.used_ip_addresses.all %}
+                        <small class="row">{{ ip }}</small>
+                    {% endfor %}
+                </div>
+				<div class="col-1"></div>
+			</div>
+            {% endwith %}
+		</div>
+{% endblock %}
+
+{% block sidebar %}
+    <div id="actions">
+        <script>
+            create_actions(new Map([
+                ['Delete Device', {href:'{% url 'delete_device' device_id=device.device_id %}',class:'btn-danger'}],
+                ['Reset scrapes', {href:'{% url 'reset_device' device_id=device.device_id %}',class:'btn-warning'}]
+            ]));
+        </script>
+    </div>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends 'base/base.html' %}
+
+{% block includes %}
+    {{ block.super }}
+    <script type="text/javascript">
+        function create_filter(fields){
+            if (fields.size == 0)
+                return;
+
+            var url = new URL(window.location);
+            var form = $('<form method="GET" class="row form-group"></form>');
+            $('#filter').append(form);
+            fields.forEach(function(val, key, map){
+                var id = key.toLowerCase().trim().replace(' ','_');
+                form.append('<label for="'+id+'" class="col-sm-1 col-form-label p-1 ml-3">'+key+':</label>')
+                var select = $('<select id="'+id+'" name="'+id+'" class="col-sm-1 form-control form-control-sm">');
+                form.append(select);
+                var param = url.searchParams.get(id);
+                val.forEach(function(option){
+                    var value = option.toLowerCase().trim().replace(' ','_');
+                    if(param && param === value){
+                        select.append('<option value="'+value+'" selected="selected">'+option+'</option>');
+                    }else{
+                        select.append('<option value="'+value+'">'+option+'</option>');
+                    }
+                });
+            });
+            form.append('<button type="submit" class="btn btn-primary btn-sm ml-3">Apply</button>')
+        }
+        </script>
+{% endblock %}
+
+
+{% block content %}
+        {% for item in items_list %}
+        <div class="row mb-3">
+            {% block list_item %}
+            {% endblock %}
+        </div>
+        {% endfor %}
+        <div class="row col">
+            {% block pagination %}
+            <center>
+                <ul class="pagination mt-2" id="pagination">
+                {% for page_num in paginator.page_range %}
+                    {% if page_num == paginator.num_pages %}
+                        <li id="post_dots" class="page-item align-text-bottom p-2">...</li>
+                    {% endif %}
+
+                    <li id="page_{{ page_num }}" class="page-item {% if page_num == current_page %} active {% endif %} ">
+                        <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                    </li>
+
+                    {% if page_num == 1 %}
+                        <li id="pre_dots" class="page-item align-text-bottom p-2">...</li>
+                    {% endif %}
+                {% endfor %}
+                </ul>
+            </center>
+            <script>
+                var current_page = {{ current_page }}
+                var last_page = {{ paginator.num_pages }}
+
+                $("#pagination li").hide()
+                $("#page_"+current_page).show()
+                for(i=1;i<7;i++){
+                    $("#page_"+(current_page-i)).show()
+                    $("#page_"+(current_page+i)).show()
+                }
+                $("#page_1").show()
+                $("#page_"+last_page).show()
+                if($("#page_2").is(":hidden")){
+                    $("#pre_dots").show()
+                }
+                if($("#page_"+(last_page - 1)).is(":hidden")){
+                    $("#post_dots").show()
+                }
+
+            </script>
+            {% endblock %}
+        </div>
+{% endblock %}

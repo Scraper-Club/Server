@@ -1,0 +1,68 @@
+{% extends 'base/content_page.html' %}
+
+{% block title %}Manage Domain{% endblock %}
+
+{% block page_title %}
+    <div class="p-3">
+		<h1 style="display: inline-block;">Domain: {{ domain }}</h1>
+	</div>
+{% endblock %}
+
+{% block content %}
+        <div class="w-50 mb-5">
+			<h3>Brief stats:</h3>
+			<hr>
+			<div class="row m-2 p-2">
+				<div class="col">Total urls:</div>
+				<div class="col">{{ urls_count }}</div>
+				<div class="col-1"></div>
+			</div>
+			<div class="row m-2 p-2">
+				<div class="col">Scraped urls:</div>
+				<div class="col">{{ scraped_urls }}</div>
+				<div class="col-1"></div>
+			</div>
+			<div class="row m-2 p-2">
+				<div class="col">Connections for last hour:</div>
+				<div class="col">{{ connections_for_hour }}</div>
+				<div class="col-1"></div>
+			</div>
+			<div class="row m-2 p-2">
+				<div class="col">Connections for last day:</div>
+				<div class="col">{{ connections_for_day }}</div>
+				<div class="col-1"></div>
+			</div>
+		</div>
+
+
+        <form action="{% url 'update_domain_config' domain_id=domain.id %}" method="post" class="w-50 mb-5">
+            <h3>Domain configurations:</h3>
+			<hr>
+            <div class="p-2 m-2 pl-4">
+			{% csrf_token %}
+		    {% for field in form_configs %}
+            <div class="form-group row">
+                <div class="col">{{ field.label_tag }}</div>
+                <div class="col">{{ field }}</div>
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary mt-2 mb-2">Save</button>
+            <a href="{% url 'reset_domain_config' domain_id=domain.id %}" class="btn btn-secondary mt-2 mb-2">
+                Set default
+            </a>
+            </div>
+        </form>
+		<h3>Black list:</h3>
+		<hr>
+		{% include 'domain/blacklist.html' %}
+{% endblock %}
+
+{% block sidebar %}
+    <div id="actions">
+        <script>
+            create_actions(new Map([
+                ['Delete Domain', {href:'{% url 'delete_domain' domain_id=domain.id %}',class:'btn-danger'}],
+            ]));
+        </script>
+    </div>
+{% endblock %}

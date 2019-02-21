@@ -1,0 +1,77 @@
+{% extends 'base/form_page.html' %}
+
+{% block title %}Upload URLS{% endblock %}
+{% block includes %}
+    {{ block.super }}
+    {% load static %}
+    <script src="{% static 'add_url.js' %}"></script>
+{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <form method="post" class="m-5 p-5 border shadow-sm w-50" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <h4>Upload your URLs</h4><hr>
+
+        <div class="row p-4">
+            <label class="col btn btn-outline-primary btn-lg">
+                <span id="file_button_text">Select file with URLs</span>
+                <input type="file" id="urls_file" type="file" name="urls_file" onchange="handleFiles(this.files)" hidden>
+            </label>
+        </div>
+
+      <div id="stats" class="row mb-5" style="visibility:hidden;">
+          <div class="text-center col text-success" id="valid"></div>
+          <div class="text-center col text-danger" id="invalid"></div>
+      </div>
+
+      <div class="row">
+          <div class="col">
+            <a class="btn btn-secondary btn-block" href="{% url 'get_all_urls' %}">Cancel</a>
+          </div>
+          <div class="col">
+              <button id="submit_button" style="display:none" class="btn btn-primary btn-block" type="submit">Upload</button>
+          </div>
+      </div>
+  </form>
+</div>
+<script type="text/javascript">
+    var reader = new FileReader();
+    reader.onload = function(fileContent){
+        arrayOfLines = fileContent.target.result.match(/[^\r\n]+/g);
+        display_statistic(arrayOfLines);
+    }
+
+    function display_statistic(urls_array){
+        var valid_counter = 0;
+        var invalid_counter = 0;
+        for(i = 0; i < urls_array.length; i++){
+            if(validate_url(urls_array[i])){
+                valid_counter+=1;
+            }else{
+                invalid_counter+=1;
+            }
+        }
+        if(valid_counter > 0){
+            $("#invalid").html('Invalid urls:' + invalid_counter);
+            $("#valid").html('Valid urls:' + valid_counter);
+            $("#stats").attr("style","");
+        }else{
+            $("#stats").attr("style","visibility:hidden;");
+            alert('No valid URLs found in this file, try another one');
+        }
+    }
+
+    function handleFiles(files){
+        var filename = files[0].name;
+        if(filename){
+            $("#file_button_text").html(filename.substr(0,20));
+            $("#submit_button").attr("style","")
+        }else{
+            $("#file_button_text").html('Select file with URLs');
+            $("#submit_button").attr("style","display:none")
+        }
+        reader.readAsText(files[0]);
+    }
+</script>
+{% endblock %}

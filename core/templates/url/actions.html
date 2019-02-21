@@ -1,0 +1,33 @@
+<span>
+    {% if url.is_scraped %}
+    <small>Cannot move scraped target</small>
+    {% else %}
+
+        <b>Move to:</b>
+        {% if user.scraper.allow_private %}
+
+            {% if url.get_pool_display != 'Public' and user.scraper.tokens > 0 %}
+            <div class="btn btn-sm btn-success" onclick="move_to_public({{ url.id }})">public</div>
+            {% endif %}
+
+            {% if url.get_pool_display != 'Private' %}
+            <div class="btn btn-sm btn-primary" onclick="move_to_private({{ url.id }})">private</div>
+            {% endif %}
+
+        {% else %}
+
+            {% if url.get_pool_display != 'Public' and user.scraper.tokens > 0 %}
+            <div class="btn btn-sm btn-success" onclick="move_to_public({{ url.id }})">public</div>
+            {% endif %}
+
+        {% endif %}
+
+        {% if url.get_pool_display != 'Waiting' %}
+        <div class="btn btn-sm btn-secondary" onclick="move_to_waiting({{ url.id }})">waiting</div>
+        {% endif %}
+
+    {% endif %}
+
+        <div class="btn btn-sm btn-danger" onclick="delete_url({{ url.id }})">delete</div>
+
+</span>

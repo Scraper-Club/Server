@@ -1,0 +1,24 @@
+{% extends 'base/index.html' %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block body %}
+<div class="row justify-content-center">
+  <form method="post" class="m-5 p-5 border">
+    {% csrf_token %}
+    {% for field in form %}
+      <p>
+        {{ field.label_tag }}<br>
+        {{ field }}
+        <div style="position: absolute;bottom: 0px;">
+        {% for error in field.errors %}
+          <div class="alert alert-danger">{{ error }}</div>
+        {% endfor %}
+        </div>
+      </p>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary btn-block mt-2 mb-2">Sign up</button>
+    <center><a href="{% url 'login' %}">I already have an account</a></center>
+  </form>
+</div>
+{% endblock %}

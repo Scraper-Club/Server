@@ -1,0 +1,49 @@
+{% extends 'base/list_page.html' %}
+
+{% block title %}
+    Admin complains
+{% endblock %}
+
+{% block page_title %}
+    <div class="p-3 mt-2 mb-2">
+        <h3 style="display: inline-block;">Total complains: {{ items_count }}</h3>
+    </div>
+{% endblock %}
+
+
+{% block content_title %}
+    <h3>Your complains:</h3>
+
+    <div class="row">
+    <div class="col-3">
+        URL
+    </div>
+    <div class="col-2">
+        Sender
+    </div>
+    <div class="col-4">
+        Receiver
+    </div>
+    <div class="col-2">
+        Time
+    </div>
+    </div>
+    <hr>
+{% endblock %}
+
+{% block list_item %}
+{% with complain=item %}
+    <div class="col-3">
+        {{ complain.get_url|truncatechars:30 }}
+    </div>
+    <div class="col-2">
+        {{ complain.get_sender }}
+    </div>
+    <div class="col-4">
+        {{ complain.get_receiver }}
+    </div>
+    <div class="col-2">
+        {{ complain.time }}
+    </div>
+{% endwith %}
+{% endblock %}

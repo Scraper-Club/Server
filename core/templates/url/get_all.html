@@ -1,0 +1,78 @@
+{% extends 'base/list_page.html' %}
+
+{% block title %}
+    My URLs
+{% endblock %}
+
+{% block includes %}
+    {{ block.super }}
+    {% load static %}
+    <script src="{% static 'scrapurl.js' %}"></script>
+{% endblock %}
+
+{% block page_title %}
+    <div class="p-3 mt-2 mb-2">
+        <h3 style="display: inline-block;">Total domains: {{ domains_count }}</h3>
+        <a class="ml-4" href="{% url 'get_all_domains' %}">View all</a>
+    </div>
+{% endblock %}
+
+
+{% block content_title %}
+    <h3>Your urls:</h3>
+    <div id="filter">
+        <script>
+            create_filter(new Map([
+                {% if user.scraper.allow_private %}
+                ['Pool',['All','Public','Private','Waiting']],
+                {% else %}
+                ['Pool',['All','Public','Waiting']],
+                {% endif %}
+                ['Status',['All','Not scraped','Scraping','Scraped']]
+            ]));
+        </script>
+    </div>
+    <div class="row">
+        <div class="col">
+           URL
+        </div>
+        <div class="col-1">
+            Status
+        </div>
+        <div class="col-1">
+            Current pool
+        </div>
+        <div class="col-4">
+            Actions
+        </div>
+    </div>
+    <hr>
+{% endblock %}
+
+{% block list_item %}
+{% with url=item %}
+    <div class="col">
+        <a href="{% url 'get_url' url_id=url.id %}">{{ url|truncatechars:60 }}</a>
+    </div>
+    <div class="col-1">
+        {{ url.get_status_display }}
+    </div>
+    <div class="col-1">
+        {{ url.get_pool_display }}
+    </div>
+    <div class="col-4">
+        {% include 'url/actions.html' %}
+    </div>
+{% endwith %}
+{% endblock %}
+
+{% block sidebar %}
+    <div id="actions"></div>
+    <script>
+        create_actions(new Map([
+                ['Add new', {href:'{% url 'add_urls' %}',class:'btn-primary'}],
+                ['Remove all', { elem: 'div', onclick:'delete_all()', class:'btn-danger'}],
+                ['Upload', {href:'{% url 'upload_urls' %}',class:'btn-info'}]
+            ]));
+    </script>
+{% endblock %}

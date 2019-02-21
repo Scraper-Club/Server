@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>ScraperClub</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <!-- Custom styles for this template -->
+    <link href="product.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
+      <div class="col-md-5 p-lg-5 mx-auto my-5">
+        <h1 class="display-4 font-weight-normal">ScraperClub</h1>
+        <p class="lead font-weight-normal">Scraper Club is a network of people who share their device while it is not in use so they can use the power of the network when they need.</p>
+
+          <a class="btn btn-outline-primary btn-lg" href="{% url 'home' %}">Login</a>
+          <a class="btn btn-outline-secondary btn-lg" href="{% url 'schema-redoc' %}">API</a>
+           <a class="btn btn-outline-primary btn-lg" href="{% url 'download_android_app' %}"> App </a>
+      </div>
+      <div class="product-device shadow-sm d-none d-md-block"></div>
+      <div class="product-device product-device-2 shadow-sm d-none d-md-block"></div>
+    </div>
+
+    <div class="d-md-flex flex-md-equal w-100 my-md-3 pl-md-3 justify-content-center">
+      <div class="bg-dark mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center text-white overflow-hidden">
+        <div class="my-3 p-3">
+          <h2 class="display-5">Step 1. </h2>
+          <p class="lead">Earn Credits by leaving the app open in scraping mode. (Make sure to keep it plugged in as the screen must be on for scraping to work).</p>
+        </div>
+      </div>
+        <div class="bg-light mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center  overflow-hidden">
+        <div class="my-3 py-3">
+          <h2 class="display-5">Step 2. </h2>
+          <p class="lead">Spend your credits by logging into ScraperClub.com and uploading your list of scraping targets. P.S. Everything can be automated with our <a href="/docs/">api</a>.</p>
+        </div>
+      </div>
+        <div class="bg-dark mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center text-white overflow-hidden">
+        <div class="my-3 p-3">
+          <h2 class="display-5">Step 3. </h2>
+          <p class="lead"> Check the status of your scraping targets under <a href="/urls/?pool=all">/my urls</a>. Once they have been processed by your fellow Scraper Club members you can download the raw html under <a href="/scrapes/">/my scrapes</a>. Or again you can do everything via the <a href="/docs/">api</a>.</p>
+        </div>
+      </div>
+    </div>
+<div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/P-4rr9Gpn9g" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+</div>
+
+  </body>
+</html>
+

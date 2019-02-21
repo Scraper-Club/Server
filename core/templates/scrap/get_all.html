@@ -1,0 +1,76 @@
+{% extends 'base/list_page.html' %}
+
+{% block title %}
+    My Scrapes
+{% endblock %}
+
+{% block page_title %}
+    <div class="p-3 mt-2 mb-2">
+        <h3 style="display: inline-block;">Total scrapes: {{ scrapes_count }}</h3>
+    </div>
+{% endblock %}
+
+
+{% block content_title %}
+    <h3>Your scrapes results:</h3>
+    <div class="row mt-4">
+        <div class="col-1">
+            <input id="sel_all" type="checkbox" onchange="checked_changed()">
+        </div>
+        <div class="col">URL</div>
+        <div class="col">Upload date</div>
+        <div class="col-1"></div>
+        <div class="col-1"></div>
+    </div>
+    <script>
+        function checked_changed(){
+            var checked = document.getElementById("sel_all").checked;
+            if(checked){
+                $('div#content input[type=checkbox]').prop('checked',true)
+            }
+            else{
+                $('div#content input[type=checkbox]').prop('checked',false)
+            }
+        }
+    </script>
+    <hr>
+{% endblock %}
+
+{% block list_item %}
+{% with scrap=item %}
+    <div class="col-1">
+        <input type="checkbox" form="download" name="selected" value="{{ scrap.id }}">
+    </div>
+    <div class="col">
+        <a href="{% url 'get_scrap' scrap_id=scrap.id %}">{{ scrap.url_value|truncatechars:60 }}</a>
+    </div>
+    <div class="col">
+        {{ scrap.upload_date }}
+    </div>
+    <div class="col-1">
+        <small>
+            <a href="{% url 'get_scrap_result' scrap_id=scrap.id %}">view</a>
+        </small>
+    </div>
+    <div class="col-1">
+        <small>
+            <a href="{% url 'delete_scrap' scrap_id=scrap.id %}">delete</a>
+        </small>
+    </div>
+{% endwith %}
+{% endblock %}
+
+{% block sidebar %}
+    <div id="actions">
+    </div>
+    <form id="download" method="post" action="{% url 'download_selected_scrapes' %}">
+        {% csrf_token %}
+        <button type="submit" class="m-1 btn btn-info btn-block">Download selected</button>
+    </form>
+    <script>
+        create_actions(new Map([
+                ['Download all', {href:'{% url 'download_all_scrapes' %}',class:'btn-primary'}],
+                ['Remove all', {href:'{% url 'delete_all_scrapes' %}',class:'btn-danger'}]
+            ]));
+    </script>
+{% endblock %}

@@ -1,0 +1,86 @@
+<form method="POST" action="{% url 'update_domain_blacklist' domain_id=domain.id %}" class="w-100">
+      {% csrf_token %}
+    <h5 class="row p-3 justify-content-center">IP addresses</h5>
+    <div class="row">
+          <div class="p-1 col">
+              <label for="ip_choices">On server</label>
+          <select id="ip_choices" class="form-control" size="10" multiple>
+              {% for ip_choice in ip_address_choice %}
+                <option id="{{ ip_choice }}" value="{{ ip_choice }}">{{ ip_choice }}</option>
+              {% endfor %}
+          </select>
+          </div>
+          <div class="col-1 pt-5">
+              <div class="btn btn-primary btn-sm m-1" onclick="add_ip_choices()"> >> </div>
+              <div class="btn btn-primary btn-sm m-1" onclick="remove_ip_choosed()"> << </div>
+          </div>
+          <div class="p-1 col">
+              <label for="ip_choosed">Blocked</label>
+              <select id="ip_choosed" class="form-control" name="choosed_ip" size="10" multiple>
+                {% for blocked_ip in blocked_ip_addresses %}
+                    <option id="{{ blocked_ip }}" value="{{ blocked_ip }}">{{ blocked_ip }}</option>
+                {% endfor %}
+              </select>
+          </div>
+      </div>
+
+    <h5 class="row p-3 justify-content-center">Devices:</h5>
+    <div class="row">
+    <div class="p-1 col">
+        <label for="device_choices">On server</label>
+          <select id="device_choices" class="form-control" size="10" multiple>
+              {% for device_choice in device_choices %}
+                <option id="{{ device_choice.device_id }}" value="{{ device_choice.device_id }}">{{ device_choice }}</option>
+              {% endfor %}
+          </select>
+          </div>
+          <div class="col-1 pt-5">
+              <div class="btn btn-primary btn-sm m-1" onclick="add_device_choices()"> >> </div>
+              <div class="btn btn-primary btn-sm m-1" onclick="remove_device_choosed()"> << </div>
+          </div>
+          <div class="p-1 col">
+              <label for="device_choosed">Blocked</label>
+              <select id="device_choosed" class="form-control" name="choosed_devices" size="10" multiple>
+                {% for blocked_device in blocked_devices %}
+                    <option id="{{ blocked_device.device_id }}" value="{{ blocked_device.device_id }}">{{ blocked_device }}</option>
+                {% endfor %}
+              </select>
+          </div>
+      </div>
+      <button type="submit" class="btn w-25 btn-primary mt-3" onclick="select_all()">Save blacklist</button>
+  </form>
+<script>
+    var ip_choices = document.getElementById("ip_choices");
+    var ip_choosed = document.getElementById("ip_choosed");
+    function add_ip_choices(){
+        selected = ip_choices.selectedOptions;
+        if(selected.size == 0)
+            return;
+        $('#ip_choosed').append(selected);
+    }
+    function remove_ip_choosed(){
+        selected = ip_choosed.selectedOptions;
+        if(selected.size == 0)
+            return;
+        $('#ip_choices').append(selected);
+    }
+
+    var device_choices = document.getElementById("device_choices");
+    var device_choosed = document.getElementById("device_choosed");
+    function add_device_choices(){
+        selected = device_choices.selectedOptions;
+        if(selected.size == 0)
+            return;
+        $('#device_choosed').append(selected);
+    }
+    function remove_device_choosed(){
+        selected = device_choosed.selectedOptions;
+        if(selected.size == 0)
+            return;
+        $('#device_choices').append(selected);
+    }
+    function select_all(){
+         $('#device_choosed option').prop('selected', true);
+         $('#ip_choosed option').prop('selected', true);
+    }
+</script>

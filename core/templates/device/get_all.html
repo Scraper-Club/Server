@@ -1,0 +1,65 @@
+{% extends 'base/list_page.html' %}
+
+{% block title %}
+    My Devices
+{% endblock %}
+
+{% block page_title %}
+    <div class="p-3 mt-2 mb-2">
+        <h3 style="display: inline-block;">Total devices: {{ devices_count }}</h3>
+    </div>
+{% endblock %}
+
+
+{% block content_title %}
+    <h3>Your devices:</h3>
+    <div class="row mt-4">
+        <div class="col">Device</div>
+        <div class="col-sm-2">Scrapes</div>
+        <div class="col-sm-2">Complains</div>
+        <div class="col-sm-2">Status</div>
+        <div class="col-sm-2"></div>
+        <div class="col-sm-1"></div>
+    </div>
+    <hr>
+{% endblock %}
+
+{% block list_item %}
+{% with device=item %}
+    <div class="col">
+        <a href="{% url 'get_device' device_id=device.device_id %}">{{ device|truncatechars:60 }}</a>
+    </div>
+    <div class="col-sm-2">
+        {{ device.get_statistic.scrapes_count }}
+    </div>
+    <div class="col-sm-2">
+        {{ device.get_statistic.complains_count }}
+    </div>
+    <div class="col-sm-2">
+        {% if device.get_statistic.is_blocked %}
+            <span class="badge badge-danger">Blocked</span>
+        {% else %}
+            <span class="badge badge-success">Working</span>
+        {% endif %}
+    </div>
+    <div class="col-sm-2">
+        <small>
+            <a href="{% url 'reset_device' device_id=device.device_id %}">reset scrapes</a>
+        </small>
+    </div>
+    <div class="col-sm-1">
+        <small>
+            <a href="{% url 'delete_device' device_id=device.device_id %}">delete</a>
+        </small>
+    </div>
+{% endwith %}
+{% endblock %}
+
+{% block sidebar %}
+    <div id="actions"></div>
+    <script>
+        create_actions(new Map([
+                ['Remove all', {href:'{% url 'delete_all_devices' %}',class:'btn-danger'}]
+            ]));
+    </script>
+{% endblock %}

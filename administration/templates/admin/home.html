@@ -1,0 +1,51 @@
+{% extends 'base/content_page.html' %}
+
+{% block title %}Admin{% endblock %}
+
+{% block page_title %}
+<h1 class="ml-1">Scraper admin panel {{ version }}</h1>
+{% endblock %}
+
+{% block content %}
+    <div class="w-75 mb-5">
+        <h3>Server statistic:</h3>
+        <hr>
+        <div class="row m-2 p-2">
+            <div class="col-3">Total users:</div>
+            <div class="col-1">{{ total_users }}</div>
+            <div class="col-1"><small><a href="{% url 'admin_users' %}">view</a></small></div>
+        </div>
+        <div class="row m-2 p-2">
+            <div class="col-3">Total devices:</div>
+            <div class="col-1">{{ total_devices }}</div>
+            <div class="col-1"><small><a href="{% url 'admin_devices' %}">view</a></small></div>
+        </div>
+        <div class="row m-2 p-2">
+            <div class="col-3">Total URLs count:</div>
+            <div class="col-1">{{ total_urls }}</div>
+            <div class="col-1"><small><a href="{% url 'admin_urls' %}">view</a></small></div>
+        </div>
+        <div class="row m-2 p-2">
+            <div class="col-3">Total complains:</div>
+            <div class="col-1">{{ total_complains }}</div>
+            <div class="col-1"><small><a href="{% url 'admin_complains' %}">view</a></small></div>
+        </div>
+        <div class="row m-2 p-2">
+            <div class="col-3">Total IP count:</div>
+            <div class="col-1">{{ total_ip }}</div>
+            <div class="col-1"><small><a href="{% url 'admin_ips' %}">view</a></small></div>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block sidebar %}
+<div id="actions">
+    <script>
+            create_actions(new Map([
+                ['Token rules', {href:'{% url 'tokens_rate' %}',class:'btn-primary'}],
+                ['Stop server', {href:'',class:'btn-danger'}]
+            ]));
+        </script>
+</div>
+{% endblock %}

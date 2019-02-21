@@ -1,0 +1,50 @@
+{% extends 'base/list_page.html' %}
+
+{% block title %}
+    Admin Users
+{% endblock %}
+
+{% block page_title %}
+    <div class="p-3 mt-2 mb-2">
+        <h3 style="display: inline-block;">Total users: {{ items_count }}</h3>
+    </div>
+{% endblock %}
+
+
+{% block content_title %}
+    <h3>Users registered on server:</h3>
+        {% if users_count == 0 %}
+            <center class="mt-2"><h5>No users here yet</h5></center>
+        {% else %}
+        <div class="row m-2 p-2">
+			<div class="col-2">user</div>
+			<div class="col-4">api key</div>
+            <div class="col-1">devices</div>
+            <div class="col-1">scrapes</div>
+            <div class="col-1">tokens</div>
+			<div class="col-1">complains received</div>
+            <div class="col-1"></div>
+		</div>
+        <hr>
+        {% endif %}
+{% endblock %}
+
+{% block list_item %}
+{% with user=item %}
+			<div class="col-2">{{ user.user }}</div>
+			<div class="col-4">{{ user.get_api_key | truncatechars:35 }}</div>
+            <div class="col-1">{{ user.get_devices.count }}</div>
+            <div class="col-1">{{ user.scrapes }}</div>
+            <div class="col-1">
+                <a href="{% url 'set_tokens' user_id=user.id %}">{{ user.tokens }}</a>
+            </div>
+            <div class="col-1">{{ user.get_complains_received.count }}</div>
+            <div class="col">
+            {% if user.allow_private %}
+                <a href="{% url 'change_mode' user_id=user.id %}?mode=public" class="badge badge-danger">Ban private</a>
+            {% else %}
+                <a href="{% url 'change_mode' user_id=user.id %}?mode=private" class="badge badge-success">Allow private</a>
+            {% endif %}
+            </div>
+{% endwith %}
+{% endblock %}

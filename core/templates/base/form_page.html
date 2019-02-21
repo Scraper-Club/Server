@@ -1,0 +1,25 @@
+{% extends 'base/index.html' %}
+{% block header %}
+    {% include 'base/header.html' %}
+{% endblock %}
+
+{% block includes %}
+{{ block.super }}
+<script type="text/javascript">
+        function create_actions(actions){
+            if (actions.size == 0)
+                return;
+            actions.forEach(function(val, key, map){
+                $('#actions').append('<a href="'+val.href+'" class="btn btn-block m-1 '+val.class+'">'+key+'</a>');
+            });
+        }
+</script>
+{% endblock %}
+
+
+{% block body %}
+    <div class="container justify-content-center">
+        {% block content %}
+        {% endblock %}
+    </div>
+{% endblock %}

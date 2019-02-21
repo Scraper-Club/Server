@@ -1,0 +1,34 @@
+{% extends 'base/index.html' %}
+{% block header %}
+    {% include 'base/header.html' %}
+{% endblock %}
+
+{% block includes %}
+{% load static %}
+    <script type="text/javascript">
+        var api_key = '{{ user.auth_token }}';
+    </script>
+    <script src="{% static 'superagent.min.js' %}"></script>
+    <script src="{% static 'base.js' %}"></script>
+    <script src="{% static 'scraper_api.js' %}"></script>
+{% endblock %}
+
+
+{% block body %}
+        <div class="row pl-3 pr-3">
+            {% block page_title %}
+            {% endblock %}
+        </div>
+        <div class="row pl-3 pr-3">
+          <div class="m-1 col border shadow-sm p-5" id="content">
+              {% block content_title %}
+              {% endblock %}
+              {% block content %}
+              {% endblock %}
+          </div>
+          <div class="m-1 col-2" id="sidebar">
+            {% block sidebar %}
+              {% endblock %}
+          </div>
+        </div>
+{% endblock %}

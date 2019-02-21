@@ -1,0 +1,7 @@
+*__pycache__/
+scraper_env/
+.idea/
+static/
+venv/
+celerybeat.pid
+celerybeat-schedule.db

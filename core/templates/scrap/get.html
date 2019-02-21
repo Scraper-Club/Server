@@ -1,0 +1,60 @@
+{% extends 'base/content_page.html' %}
+
+{% block title %}Manage Scrap{% endblock %}
+
+{% block page_title %}
+    <div class="p-3">
+		<h1 style="display: inline-block;">Scrap url: {{ scrap }}</h1>
+	</div>
+{% endblock %}
+
+{% block content %}
+    <div class="w-50 mb-5">
+			<h3>Brief stats:</h3>
+			<hr>
+            <div class="row m-2 p-2">
+				<div class="col"> Scraped by:</div>
+				<div class="col">{{ scrap.scraper_user }}</div>
+				<div class="col-1"></div>
+			</div>
+            <div class="row m-2 p-2">
+				<div class="col"> Device:</div>
+				<div class="col">{{ scrap.scraper_device }}</div>
+				<div class="col-1"></div>
+			</div>
+            <div class="row m-2 p-2">
+				<div class="col"> Upload time:</div>
+				<div class="col">{{ scrap.upload_date }}</div>
+				<div class="col-1"></div>
+			</div>
+            <div class="row m-2 p-2">
+				<div class="col"> From ip address:</div>
+				<div class="col">{{ scrap.ip_address }}</div>
+				<div class="col-1"></div>
+			</div>
+            <div class="row m-2 p-2">
+				<div class="col"> File size:</div>
+				<div class="col">{{ scrap.get_file_size }}</div>
+				<div class="col-1"></div>
+			</div>
+		</div>
+{% endblock %}
+
+{% block sidebar %}
+<div id="actions">
+    <script>
+            create_actions(new Map([
+                ['Download', {href:'{% url 'download_scrap' scrap_id=scrap.id %}',class:'btn-primary'}],
+                ['View result', {href:'{% url 'get_scrap_result' scrap_id=scrap.id %}',class:'btn-secondary'}],
+                {% if scrap.complained %}
+                ['Already Complained', {href:'',class:'btn-warning disabled'}],
+                {% elif not scrap.can_complain %}
+                ['Cant Complain', {href:'',class:'btn-warning disabled'}],
+                {% else %}
+                ['Complain', {href:'{% url 'complain_scrap' scrap_id=scrap.id %}',class:'btn-warning'}],
+                {% endif %}
+                ['Delete', {href:'{% url 'delete_scrap' scrap_id=scrap.id %}',class:'btn-danger'}]
+            ]));
+        </script>
+</div>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'base/form_page.html' %}
+
+{% block title %}Set token rate rules{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <form method="post"  class="w-50 m-5 pt-5 pr-5 pl-5 border" enctype="multipart/form-data">
+    <div class="form-group">
+    {% csrf_token %}
+    <h4>Write token rate rules</h4><hr>
+        <textarea class="form-control" rows="10" id="rules" name="rules">{{ current_rules }}</textarea>
+        <button class="btn btn-primary w-25 btn-sm mt-3" type="submit">Set</button>
+        <div class="btn btn-secondary w-25 btn-sm mt-3" onclick="validate_rules()" >Validate</div>
+	</div>
+  </form>
+</div>
+
+<script type="text/javascript">
+
+    function validate(){
+
+        var valid = true;
+        var input = $("#rules").val();
+        try{
+           var rules = JSON.parse(input)
+
+           if(rules[0]['from'] !== 0) return false;
+           if(rules[rules.length - 1]['to'] !== 'infinite'){
+                return false;
+           }else{
+                rules[rules.length - 1]['to'] = -1;
+           }
+
+           if(rules.length > 1){
+                var end = rules[0]['to']
+                for(i = 1; i < rules.length; i++){
+                    if(rules[i]['from']!== end + 1) return false;
+                    end = rules[i]['to']
+                }
+           }
+           return true;
+        }catch(e){
+           return false;
+        }
+    }
+
+    function validate_rules(){
+        if(validate()){
+            alert('Rules valid, you can apply them');
+        }
+        else{
+            alert('Rules invalid, please fix them');
+        }
+    }
+</script>
+
+
+{% endblock %}
+
+[
+{ "from":0, "to":100, "rate":10 },
+{ "from":0, "to":100, "rate":10 }
+]
